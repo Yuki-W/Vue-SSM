@@ -1,0 +1,74 @@
+------------------------------------------------
+文件说明：
+商家版
+Login.vue       进入APP的`登录`页面
+OpenShop.vue    登录页面，点击【我要开店】按钮进入`开店详情介绍`页面：包括开店流程、常见问题、已入驻商家
+ExamplePic.vie  `开店申请材料图片示例`页面
+Register.vue    点击`开店详情介绍`页面的【我要开店】按钮，进入商家注册/登录页面。未注册手机号将自动注册；已注册手机号的直接进入下一步
+ApplySHop.vue   `申请开店`页面
+StoreInfo.vue  开店`门店信息步骤1`页面,里面包含 step1.vue;step2.vue;step3.vue 步骤页面
+Category.vue    `经营类别`页面。通过选择经营类别展示出来的页面，里面的数据从数据库端读取出来
+
+公共组件：
+Header.vue  顶部信息条，通过具名插槽来自定义填充内容
+------------------------------------------------
+
+************************************************
+vue组件中yyinrushjQuery：
+https://www.jianshu.com/p/8118f7f5298e
+vue localStorage本地存储：
+https://blog.csdn.net/hani_wen/article/details/80801097
+************************************************
+
+# 2019年12月3日
+1、解决使用MUI 顶部导航栏时 mui页面提示：Unable to preventDefault inside passive event listener due to target being treated as passive 错误的解决办法
+    解决办法：在被点击的样式下加入 { touch-action: none; }
+
+# 2019年12月4日
+1、待解决：弹出菜单框取消倒三角显示效果
+2、使用 animate.css 实现动画效果
+    步骤：安装 animate.css  [ npm install animate.css ];
+          main.js 中导入 animate.css
+3、抽离顶部信息条组件 Header ，使用具名插槽，根据情况更改内容。
+4、实现 `开店详情介绍`页面和`开店申请材料图片示例`页面，并在页面内引入 Header.vue 组件，根据指定的插槽名实现顶部信息效果
+
+# 2019年12月5日
+1、抽离手机验证输入框组件，实现组件复用
+
+# 12月6日
+1、申请开店门店信息 想法：将主体内容变成一个路由，通过点击底部按钮改变内容
+
+# 12月7日
+1、解决【门店信息】页面，刷新后标题数字和内容不同步问题
+原因：因为 data 中的数据是保存在内存中的，所以当页面刷新后，data中的数据会变为初始值
+解决办法：在 mounted()方法里调用 next()和previous()方法。
+2、完成`门店信息1`页面
+    2.1 实现图片预览功能：
+    <!-- 2.1.1 安装 vue-preview插件 `https://github.com/LS1231/vue-preview`
+    2.1.2 在 webpack.base.config.js文件中的loaders 新增一个loader。原因：插件编写中使用了ES6语法，需进行代码编译
+    2.1.3 引入 vue-preview插件 -->
+    手动编写代码实现缩略图效果 思路：
+        使用固定定位，蒙板层全屏显示，设置透明度设为0.7；缩略大图宽度设为100%，固定定位，z-index比蒙板层+1
+    2.2 实现 `经营品类`页面。当选择`经营品类`时，打开页面，多级列表显示所有可供选择的类别
+        【定义一个`经营类别接口`，里面存放各种餐饮类别。将来，所有的内容都从数据库读取。】
+
+# 12月9日
+由于学业原因，耽误了一天时间，今天要实现`经营品类`页面
+`经营品类`页面的数据通过接口渲染在页面上，前期准备：创建数据库表categories和product_categories
+
+1、解决前端跨域问题 
+2、改修页面功能，添加 次要经营
+未解决：从本地存储中取数据，显示在页面上
+思路：选择主次营分类时，使用sessionStorage存储起来，用vuex进行状态管理。其它组件可以从里面取值
+
+3、sessionStorage存储对象
+<!-- 
+item=[{id:1,name:'wyf'}]
+存储对象时，先转换成JSON串
+let s = JSON.stringify(item);
+sessionStorage.setItem("mainCategory", JSON.stringify(item));
+let list = JSON.parse(s);
+console.log(list.name); -->
+
+
+4、使用vuex状态管理仓储 全局存储 申请开店时的信息。点击`下一步`按钮前从仓储里拿出对应的值进行验证是否可以进行下一步操作
