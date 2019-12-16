@@ -21,7 +21,7 @@
       <div class="list-item">
         <span class="title">店铺地址</span>
         <div class="right-item">
-          <div class="item-content" @click="getAddrPick">
+          <div class="item-content" @click.prevent="getAddrPick">
             {{address}}
             <span class="mui-icon mui-icon-arrowright"></span>
           </div>
@@ -58,7 +58,7 @@
               </span>
 
               <div class="upload" @click="showUpload">
-                <img :src="logo" alt />
+                <!-- <img :src="logo" alt /> -->
               </div>
             </div>
             <!-- 弹窗功能 -->
@@ -72,7 +72,7 @@
                     src="http://shadow.elemecdn.com/faas/napos-kaidian/static/img/ex-front.b2cc2c4.png"
                     @click="showPic"
                   />
-                  <button v-show="isShowUpload" type="button" class="mui-btn mui-btn-primary">上传文件</button>
+                  <input type="file" v-show="isShowUpload" value="上传文件"/>
                 </div>
                 <div class="icon">
                   <span class="mui-icon mui-icon-close" @click="closePopup"></span>
@@ -135,6 +135,7 @@
                     @click="showPic"
                   />
                   <button v-show="isShowUpload" type="button" class="mui-btn mui-btn-primary">上传文件</button>
+                  <input type="file" v-show="isShowUpload" value="上传文件"/>
                 </div>
                 <div class="icon">
                   <span class="mui-icon mui-icon-close" @click="closePopup"></span>
@@ -184,7 +185,7 @@
 </template>
 
 <script>
-import picker from '../../components/mobile/comment/AddrPicker'
+import picker from "../../components/mobile/comment/AddrPicker";
 export default {
   //import引入的组件需要注入到对象中才能使用
   components: {
@@ -216,14 +217,30 @@ export default {
       managName: "", //联系人
       phone: "", //联系人电话
       map: {},
-      popupVisible:false
+      popupVisible: false
     };
   },
   created() {
     this.getCategor();
+    this.getInit();
   },
   //方法集合
   methods: {
+    //获取初始数据
+    getInit() {
+     let shopInfo = JSON.parse(sessionStorage.getItem("shopInfo"));
+      if (shopInfo !== null) {
+        shopInfo.mainCate = this.mainMsg;
+        shopInfo.minorMsg = this.minorMsg;
+        this.address = shopInfo.address;
+        this.addrCode = shopInfo.addrCode;
+        this.logo = shopInfo.logo;
+        this.shopName = shopInfo.shopName;
+        this.enviroment = shopInfo.enviroment;
+        this.managName = shopInfo.managName;
+        this.phone = shopInfo.phone;
+      }  
+    },
     //开启弹窗
     showPopup() {
       this.popup = true;
@@ -262,14 +279,15 @@ export default {
       } else {
         this.mainMsg = "请选择经营品类";
       }
+      
     },
     // 控制城市三级联动弹窗打开
-    getAddrPick(){
-      this.popupVisible=!this.popupVisible
+    getAddrPick() {
+      this.popupVisible = !this.popupVisible;
     },
     // 获取店铺地址
-    getAddr(val){
-      this.address = val
+    getAddr(val) {
+      this.address = val;
     }
   },
   updated() {
@@ -284,7 +302,8 @@ export default {
     this.$set(this.map, "managName", this.managName);
     this.$set(this.map, "phone", this.phone);
 
-    this.$emit("stepList1", this.map);
+    // this.$emit("stepList1", this.map);
+    sessionStorage.setItem("shopInfo", JSON.stringify(this.map));
   }
 };
 </script>
@@ -419,6 +438,13 @@ export default {
 .main-txt > button {
   width: 100%;
   margin-top: 10px;
+}
+.main-txt>input[type=file]{
+  position: relative;
+  z-index: 20;
+  top: -33px;
+  opacity: 0;
+  width: 100%;
 }
 .main .mui-icon.mui-icon-close {
   color: #fff;

@@ -28,8 +28,11 @@ Vue.config.productionTip = false
 
 
 // vuex配置
-const store = new Vuex.Store({
+const store = new Vuex.Store({//创建仓库
   state:{ 
+  },
+  mutations:{
+
   }
 })
 

@@ -15,7 +15,7 @@ export const Getcities = (provinceCode) => {
     let citiesArr = [];
     cities.forEach(function (item) {
         if (item.provinceCode == provinceCode) {
-            console.log(item)
+            // console.log(item)
             citiesArr.push(item)
         }
     })

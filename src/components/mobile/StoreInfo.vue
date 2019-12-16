@@ -9,7 +9,6 @@
 
     <!-- 主要内容 -->
     <router-view
-      @stepList1="getInfo1"
       :cateTips="isCate"
       :nameTips="isName"
       :phoneTips="isPhone"
@@ -22,8 +21,8 @@
     <!-- 底部选项卡 tabbar -->
     <footer class="footer-tabbar">
       <div class="btn-tabbar">
-        <button class="save" v-if="isShow">保存草稿</button>
-        <button class="prev" v-if="!isShow" @click="previous" :class="[isDisable?'show':'']">上一步</button>
+        <button class="save" v-show="isShow">保存草稿</button>
+        <button class="prev" v-show="!isShow" @click="previous" :class="[isDisable?'show':'']">上一步</button>
         <button class="next" @click="next" :class="[isDisable?'disable':'']">下一步</button>
       </div>
     </footer>
@@ -45,43 +44,46 @@ export default {
       isCate: false,
       isName: false,
       isPhone: false,
-      isPic: false, //
+      isPic: false,
       isLogo: false,
       isEnviroment: false,
       isAddr: false,
-      list: {}
+      list: {},
+      mainCate:'',
+      address:'',
+      logo:'',
+      shopName:'',
+      enviroment:'',
+      managName:'',
+      phone:'',
     };
   },
   methods: {
-    getInfo1(e) {
-      if(e === undefined){
-        this.isCate=this.isAddr=this.isLogo=this.isPic=this.isEnviroment=this.isPhone=true
-      }else{
-      let mainCate = e.mainCate;
-      let address = e.address;
-      let logo = e.logo;
-      let shopName = e.shopName;
-      let enviroment = e.enviroment;
-      let managName = e.managName;
-      let phone = e.phone;
-      this.isCate = mainCate === '请选择经营品类' ? true : false;
-      this.isAddr = address === '标记店铺地址' ? true : false;
-      this.isLogo = logo === '' ? true : false;
-      this.isPic = shopName === '' ? true : false;
-      this.isEnviroment = enviroment === '' ? true : false;
-      this.isName = managName === '' ? true : false;
-      this.isPhone = phone === '' ? true : false;
+    getInfo() {
+      let shopInfo = JSON.parse(sessionStorage.getItem('shopInfo'));
+      if(shopInfo !== null){
+        this.mainCate = shopInfo.mainCate;
+        this.address = shopInfo.address;
+        this.logo = shopInfo.logo;
+        this.shopName = shopInfo.shopName;
+        this.enviroment = shopInfo.enviroment;
+        this.managName = shopInfo.managName;
+        this.phone = shopInfo.phone;
       }
-
     },
-    check1() {
-      // console.log(this.list);
+    oprate(){
+      this.isCate = this.mainCate === "请选择经营品类"|| this.mainCate==='' ? true : false;
+      this.isAddr = this.address === "省 - 市 - 区/县"|| this.address==='' ? true : false;
+      this.isLogo = this.logo === '' ? true : false;
+      this.isPic = this.shopName === '' ? true : false;
+      this.isEnviroment = this.enviroment === '' ? true : false;
+      this.isName = this.managName === '' ? true : false;
+      this.isPhone = this.phone === '' ? true : false;
     },
     // 【下一步】按钮
     next() {
-      // console.log(this.list);
-      this.getInfo1();
-
+      this.getInfo()
+      this.oprate()
       // if (this.index < 2) {
       //   this.index++;
       //   this.msg = "上一步";
