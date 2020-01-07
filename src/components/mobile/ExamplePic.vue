@@ -14,8 +14,8 @@
 
 <script>
 // 引入自定义组件
-import header from "../mobile/comment/Header";
-import materials from '../mobile/comment/Materials'
+import header from "../mobile/common/Header";
+import materials from '../mobile/common/Materials'
 export default {
   data() {
     return {};

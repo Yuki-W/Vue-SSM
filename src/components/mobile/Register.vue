@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import header from "../mobile/comment/Header";
+import header from "../mobile/common/Header";
 
 export default {
   //import引入的组件需要注入到对象中才能使用

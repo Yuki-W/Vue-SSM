@@ -11,10 +11,7 @@ export default {
     return {
       selected:'首页',
     }
-  },
-  created(){
-    },
- 
+  }
 };
 </script>
 <style>

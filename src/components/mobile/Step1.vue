@@ -54,45 +54,16 @@
             <div>
               <span>
                 需拍出完整门匾、门框
-                <a class="example" @click="showPopup">示例图</a>
+                <a class="example" @click="showPopup(0)">示例图</a>
               </span>
 
-              <div class="upload" @click="showUpload">
+              <div class="upload" @click="showPopup(0,true)">
                 <!-- <img :src="logo" alt /> -->
               </div>
             </div>
             <!-- 弹窗功能 -->
-            <div v-show="popup">
-              <!-- 这里是要展示的内容 -->
-              <div class="main">
-                <div class="main-txt">
-                  <strong>注意事项</strong>
-                  <p>·需拍出完整门匾、门框（建议正对门店2米处拍摄）</p>
-                  <img
-                    src="http://shadow.elemecdn.com/faas/napos-kaidian/static/img/ex-front.b2cc2c4.png"
-                    @click="showPic"
-                  />
-                  <input type="file" v-show="isShowUpload" value="上传文件"/>
-                </div>
-                <div class="icon">
-                  <span class="mui-icon mui-icon-close" @click="closePopup"></span>
-                </div>
-              </div>
-              <!-- 这是半透明背景层 -->
-              <div class="over"></div>
-            </div>
-            <!-- 缩略图 -->
-            <div v-show="isShowPic">
-              <div class="pic-main">
-                <!-- 缩略大图 -->
-                <img
-                  src="http://shadow.elemecdn.com/faas/napos-kaidian/static/img/ex-front.b2cc2c4.png"
-                  alt
-                />
-              </div>
-              <!-- 这是半透明背景层 -->
-              <div class="cover" @click="DisabPic"></div>
-            </div>
+            <pop-pic :popup="isPopup" :filePopup="isShowUpload" @close="closePopup"></pop-pic>
+            
           </div>
           <div class="hide" :class="{'upload-pic-tips':logoTips}">请上传门脸图</div>
         </div>
@@ -116,46 +87,14 @@
             <div>
               <span>
                 需真实反映用餐环境
-                <a class="example" @click="showPopup">示例图</a>
+                <a class="example" @click="showPopup(1)">示例图</a>
               </span>
 
-              <div class="upload" @click="showUpload">
-                <img :src="enviroment" alt />
+              <div class="upload" @click="showPopup(1,true)">
+                <!-- <img :src="enviroment" alt /> -->
               </div>
             </div>
-            <!-- 弹窗功能 -->
-            <div v-show="popup">
-              <!-- 这里是要展示的内容 -->
-              <div class="main">
-                <div class="main-txt">
-                  <strong>注意事项</strong>
-                  <p>·需真实反映用餐环境（收银台、用餐桌椅等）</p>
-                  <img
-                    src="http://shadow.elemecdn.com/faas/napos-kaidian/static/img/ex-front.b2cc2c4.png"
-                    @click="showPic"
-                  />
-                  <button v-show="isShowUpload" type="button" class="mui-btn mui-btn-primary">上传文件</button>
-                  <input type="file" v-show="isShowUpload" value="上传文件"/>
-                </div>
-                <div class="icon">
-                  <span class="mui-icon mui-icon-close" @click="closePopup"></span>
-                </div>
-              </div>
-              <!-- 这是半透明背景层 -->
-              <div class="over"></div>
-            </div>
-            <!-- 点击缩略小图，查看大图 -->
-            <div v-show="isShowPic">
-              <div class="pic-main">
-                <!-- 缩略大图 -->
-                <img
-                  src="http://shadow.elemecdn.com/faas/napos-kaidian/static/img/ex-front.b2cc2c4.png"
-                  alt
-                />
-              </div>
-              <!-- 这是半透明背景层 -->
-              <div class="cover" @click="DisabPic"></div>
-            </div>
+            <pop-pic :popup="isPopup" :filePopup="isShowUpload" @close="closePopup"></pop-pic>
           </div>
           <div class="hide" :class="{'upload-pic-tips':envTips}">请上传店内环境图</div>
         </div>
@@ -185,11 +124,13 @@
 </template>
 
 <script>
-import picker from "../../components/mobile/comment/AddrPicker";
+import picker from "../../components/mobile/common/AddrPicker";
+import popPic from '../mobile/common/UploadPic'
 export default {
   //import引入的组件需要注入到对象中才能使用
   components: {
-    picker
+    picker,
+    popPic
   },
   props: {
     cateTips: Boolean,
@@ -203,8 +144,7 @@ export default {
   data() {
     //这里存放数据
     return {
-      popup: false, //表示不显示弹窗
-      isShowPic: false, // 表示缩略图不显示
+      isPopup: false,
       isShowUpload: false, // 不点击文件上传不显示
       mainMsg: "", //请选择经营品类
       minorMsg: "",
@@ -241,29 +181,20 @@ export default {
         this.phone = shopInfo.phone;
       }  
     },
-    //开启弹窗
-    showPopup() {
-      this.popup = true;
-      this.isShowUpload = false;
+    //打开弹窗
+    showPopup(index,falg) {
+      if(falg){  //显示上传图片弹窗
+        this.isShowUpload = true;
+      }else{    //显示示例图弹窗
+        this.isShowUpload = false;
+      }
+        this.isPopup=true;
     },
-    //关闭弹窗
-    closePopup() {
-      this.popup = false;
+    //子组件传递给父组件的事件，用来关闭弹出窗
+    closePopup(val){
+      this.isPopup=val;
     },
-    //显示缩略图
-    showPic() {
-      this.isShowPic = true;
-    },
-    //隐藏缩略大图
-    DisabPic() {
-      console.log("点击");
-      this.isShowPic = false;
-    },
-    //文件上传
-    showUpload() {
-      this.isShowUpload = true;
-      this.popup = true;
-    },
+    
     //经营品类
     getCategor() {
       // 获取经营类别。
@@ -392,90 +323,8 @@ export default {
   box-sizing: border-box;
 }
 
-/* 弹窗样式 */
-.main {
-  position: fixed;
-  left: 15%;
-  top: 25%;
-  width: 70%;
-
-  z-index: 1000;
-  box-sizing: border-box;
-}
-.over,
-.cover {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  opacity: 0.6;
-  filter: alpha(opacity=70);
-  top: 0;
-  left: 0;
-  /* z-index: 999; */
-  background-color: rgb(22, 21, 21);
-}
-.over {
-  z-index: 999;
-}
-.cover {
-  z-index: 1001;
-}
-.main-txt {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 10px;
-}
-.main-txt > strong {
-  font-size: 14px;
-}
-.main-txt > p {
-  font-size: 12px;
-  margin: 10px 0 15px;
-}
-.main-txt > img {
-  width: 100%;
-}
-.main-txt > button {
-  width: 100%;
-  margin-top: 10px;
-}
-.main-txt>input[type=file]{
-  position: relative;
-  z-index: 20;
-  top: -33px;
-  opacity: 0;
-  width: 100%;
-}
-.main .mui-icon.mui-icon-close {
-  color: #fff;
-  text-align: center;
-  margin-top: 10px;
-  margin-right: 0;
-}
-.icon {
-  display: flex;
-  justify-content: center;
-  margin: 0 33px;
-  box-sizing: border-box;
-}
-
-/* 缩略大图 */
-.pic-main {
-  width: 100%;
-  position: fixed;
-  top: 30%;
-  left: 0;
-  z-index: 1002;
-  background-color: red;
-}
-.pic-main > img {
-  width: 100%;
-}
-
 /* 经营品类 内容样式 */
 .right-item > .item-content.curText {
   font-size: 12px;
 }
-
-/* 三级联动样式 */
 </style>

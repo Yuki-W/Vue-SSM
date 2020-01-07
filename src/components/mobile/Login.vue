@@ -85,8 +85,8 @@
 </template>
 
 <script>
-import header from "../mobile/comment/Header";
-import commLogin from "../mobile/comment/CommLogin";
+import header from "../mobile/common/Header";
+import commLogin from "../mobile/common/CommLogin";
 export default {
   name: "login",
   components: {

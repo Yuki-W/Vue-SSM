@@ -118,7 +118,7 @@
 </template>
 
 <script>
-import header from "../mobile/comment/Header";
+import header from "../mobile/common/Header";
 export default {
   data() {
     return {};

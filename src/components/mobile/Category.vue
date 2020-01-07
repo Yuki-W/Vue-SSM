@@ -43,8 +43,8 @@
 </template>
 
 <script>
-import header from "../mobile/comment/Header";
-import toast from "../mobile/comment/Toast";
+import header from "../mobile/common/Header";
+import toast from "../mobile/common/Toast";
 export default {
   components: {
     userDefinedHeader: header,
