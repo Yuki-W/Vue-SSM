@@ -47,19 +47,6 @@ const store = new Vuex.Store({ //创建仓库
   mutations: {
     // mutations对象中的方法只能接收两个参数，并且第一个参数是固定值。
     // 所以第二个参数 要想实现传递多值，需要使用对象
-    // changePicPath(state, obj) {
-    //   let i = obj.item
-    //   let path = obj.path
-    //   switch (i) {
-    //     case 0:
-    //       state.storeInfo[0].logo = path
-    //       break;
-    //     case 1:
-    //       state.storeInfo[0].enviroment = path
-    //       // default:
-    //       break;
-    //   }
-    // },
     handleId(state, id) {
       state.currentId = id;
       localStorage.setItem('currentId', JSON.stringify(state.currentId));

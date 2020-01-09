@@ -63,8 +63,8 @@
                 <a class="example" @click="showPopup(0)">示例图</a>
               </span>
 
-              <div class="upload" @click="showPopup(0,true)">
-                <!-- <img :src="picPath0" alt /> -->
+              <div class="upload" @click="showPopup(0,true)" :class="[logo === undefined? '':'hideStyle']">
+                <img :src="logo" alt  :class="[logo===undefined?'hideimg':'']"/>
               </div>
             </div>
             <!-- 弹窗功能 -->
@@ -95,9 +95,9 @@
                 <a class="example" @click="showPopup(1)">示例图</a>
               </span>
 
-              <div class="upload" @click="showPopup(1,true)">
-                <!-- :class="[picPath1 === ''? '':'hideStyle']" -->
-                <!-- <img :src="picPath1" alt /> -->
+              <div class="upload" @click="showPopup(1,true)" :class="[enviroment === undefined? '':'hideStyle']">
+                
+                <img :src="enviroment" alt :class="[enviroment===undefined?'hideimg':'']"/>
               </div>
             </div>
             <pop-pic :popup="isPopup" :filePopup="isShowUpload" @close="closePopup" :item="index"></pop-pic>
@@ -219,12 +219,18 @@ export default {
       this.$store.commit("updateInfo", info);
     }
   },
+  watch: {
+    getShopInfo:function(newVal,oldVal){
+      console.log(`当前对象:${newVal},旧值：${oldVal}`)
+    }
+  },
   computed: {
     currentTel() {
       //获取当前手机号
       return this.$store.getters.getCurrTel;
     },
     getShopInfo() {
+      // console.log('执行一次');
       //初始化数据
       let object = this.$store.getters.filterShop(); //获取当前店铺信息
       console.log(object);
@@ -243,6 +249,8 @@ export default {
       } else {
         this.mainCate = "请选择经营品类别";
       }
+      this.logo = object.logo
+      this.enviroment = object.enviroment
       return object;
     }
     
@@ -340,9 +348,13 @@ input[type="tel"] {
   border: none;
 }
 .upload > img {
+  display: block;
   width: 50px;
   height: 50px;
   box-sizing: border-box;
+}
+.upload>img.hideimg{
+  display: none;
 }
 
 /* 经营品类 内容样式 */

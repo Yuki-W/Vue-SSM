@@ -49,7 +49,7 @@ export default {
       showPopup: this.popup, //控制弹出层的显示和隐藏
       isShowPic: false, // 表示缩略图不显示
       showUpload: this.filePopup,
-      index: this.item,
+      index: this.item, //标识当前是哪一项
       imgPath: [
         "http://shadow.elemecdn.com/faas/napos-kaidian/static/img/ex-front.b2cc2c4.png",
         "https://shadow.elemecdn.com/lib/kd-resource@0.1.0/indoor-pic.jpeg"
@@ -81,6 +81,13 @@ export default {
         _this.picFile = this.result;
         _this.closePopup();
           // _this.$store.commit("changePicPath", {path:_this.picFile,item:_this.index});
+          let info = {}
+          if(_this.index === 0){
+            info = { logo: _this.picFile };
+          }else if(_this.index === 1){
+            info = { enviroment: _this.picFile };
+            }
+            _this.$store.commit("updateInfo", info);
       };
     }
   }
