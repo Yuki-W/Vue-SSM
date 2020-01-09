@@ -2,7 +2,7 @@
 // Template version: 1.3.1
 // see http://vuejs-templates.github.io/webpack for documentation.
 
-var url = 'http://localhost:8080/ssm_demo'
+var url = 'http://localhost:8080/SSM_demo'
 const path = require('path')
 
 module.exports = {

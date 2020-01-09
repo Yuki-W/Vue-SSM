@@ -60,11 +60,13 @@ export default {
   border: 0;
   border-radius: 10px;
   color: #fff;
+  pointer-events: none; /* CSS3新特性 禁止鼠标点击事件 */
 }
 .read-me {
   margin-bottom: 10px;
 }
 .ready.show {
+  pointer-events:auto;
   background-color: #007aff;
 }
 </style>

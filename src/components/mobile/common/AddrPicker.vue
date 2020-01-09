@@ -59,9 +59,10 @@ export default {
           textAlign: "center"
         }
       ],
-      region: "北京市 - 北京市 - 东城区",   //默认地址初始值
+      region: "北京市 - 北京市 - 东城区", //默认地址初始值（解决不滚动时选择无效问题）
       regionInit: false,
-      popupVisible: this.result
+      popupVisible: this.result, //控制 picker 的显示和隐藏
+      oldRegion: ""
     };
   },
   watch: {
@@ -73,10 +74,13 @@ export default {
   methods: {
     operate(index) {
       this.popupVisible = false;
-      if (index === 1) {
-        this.region = "省 - 市 - 区/县";
+      if (index === 1) { //取消按钮
+        this.oldRegion = "省 - 市 - 区/县";
+        this.$emit("getRegion", this.oldRegion);
+      } else { //确认按钮
+        this.region = this.region;
+        this.$emit("getRegion", this.region);
       }
-      this.$emit("getRegion", this.region);
     },
     onValuesChange(picker, values) {
       //城市三级联动
@@ -86,7 +90,7 @@ export default {
             values[2]["name"]
           }`;
 
-          //   console.log(this.region);
+          // console.log(this.region);
 
           //给市、县赋值
           let area = "";
@@ -108,7 +112,7 @@ export default {
       } else {
         this.regionInit = true;
       }
-      //   console.log(this.regionInit);
+      // console.log(this.regionInit);
     }
   }
 };

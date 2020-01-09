@@ -6,11 +6,8 @@
       <div class="main-txt">
         <strong>注意事项</strong>
         <p>·需拍出完整门匾、门框（建议正对门店2米处拍摄）</p>
-        <img
-          :src="imgPath[1]"
-          @click="showPic"
-        />
-        <input type="file" v-show="showUpload" value="上传文件" id="logo-img-file" />
+        <img :src="imgPath[index]" @click="showPic" />
+        <input type="file" v-show="showUpload" value="上传文件" id="logo-img-file" @change="getPicFile" />
         <label for="logo-img-file" v-show="showUpload" class="mui-btn mui-btn-primary">上传文件</label>
       </div>
       <div class="icon">
@@ -23,10 +20,7 @@
     <div v-show="isShowPic">
       <div class="pic-main">
         <!-- 缩略大图 -->
-        <img
-          :src="imgPath[1]"
-          alt
-        />
+        <img :src="imgPath[index]" alt />
       </div>
       <!-- 这是半透明背景层 -->
       <div class="cover" @click="DisabPic"></div>
@@ -36,7 +30,7 @@
 
 <script>
 export default {
-  props: ["popup", "filePopup"],
+  props: ["popup", "filePopup", "item"],
   watch: {
     //监听父组件传递过来的值，并将值赋值给 v-show
     popup(val) {
@@ -44,6 +38,9 @@ export default {
     },
     filePopup(val) {
       this.showUpload = val;
+    },
+    item(val) {
+      this.index = val;
     }
   },
   data() {
@@ -52,7 +49,12 @@ export default {
       showPopup: this.popup, //控制弹出层的显示和隐藏
       isShowPic: false, // 表示缩略图不显示
       showUpload: this.filePopup,
-      imgPath:["http://shadow.elemecdn.com/faas/napos-kaidian/static/img/ex-front.b2cc2c4.png","https://shadow.elemecdn.com/lib/kd-resource@0.1.0/indoor-pic.jpeg"]
+      index: this.item,
+      imgPath: [
+        "http://shadow.elemecdn.com/faas/napos-kaidian/static/img/ex-front.b2cc2c4.png",
+        "https://shadow.elemecdn.com/lib/kd-resource@0.1.0/indoor-pic.jpeg"
+      ],
+      picFile: ""
     };
   },
   methods: {
@@ -67,6 +69,19 @@ export default {
       this.showPopup = false;
       //   子组件向父组件传值，告诉其已经关闭了
       this.$emit("close", this.showPopup);
+    },
+    getPicFile(even) {
+      //点击上传图片按钮，改变图片路径
+      let _this = this;
+      let files = even.target.files[0];
+      if (!even || !window.FileReader) return; // 看支持不支持FileReader
+      let reader = new FileReader();
+      reader.readAsDataURL(files); //关键一步，将读取到的文件转换成base64编码
+      reader.onloadend = function() {
+        _this.picFile = this.result;
+        _this.closePopup();
+          // _this.$store.commit("changePicPath", {path:_this.picFile,item:_this.index});
+      };
     }
   }
 };
@@ -98,9 +113,9 @@ export default {
 .main-txt > input[type="file"] {
   display: none;
 }
-.main-txt>label{
-    width: 100%;
-    margin-top: 20px
+.main-txt > label {
+  width: 100%;
+  margin-top: 20px;
 }
 
 .pic-main {

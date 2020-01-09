@@ -65,15 +65,18 @@ export default {
   created() {
     this.getCategory();
     this.change(1);
+
     //设置第一次进入页面时，默认选中上一次选择的选项值
-    let cateList = JSON.parse(sessionStorage.getItem("cateList"));
-    if (cateList !== null && cateList.length > 0) {
+   
+    let shopList = this.$store.getters.filterShop(); // 获取当前店铺信息
+    let cateArray = shopList.cateLists; // 当前店铺的经营类别信息
+    if (cateArray !== null) {
       this.isSubmit = true;
-      for (let i = 0; i < cateList.length; i++) {
-        this.map.push(cateList[i]);
+      for (let i = 0; i < cateArray.length; i++) {
+        this.map.push(cateArray[i])
         i % 2 === 0
-          ? (this.curIndex = cateList[i].id)
-          : (this.oldIndex = cateList[i].id);
+          ? (this.curIndex = cateArray[i].id)
+          : (this.oldIndex = cateArray[i].id);
       }
     }
   },
@@ -147,7 +150,9 @@ export default {
     },
     submit() {
       if (this.map.length > 0) {
-        sessionStorage.setItem("cateList", JSON.stringify(this.map));
+        // 提交 选中的经营类别对象给 store
+        let info = {cateLists:this.map}
+        this.$store.commit("updateInfo", info);
       }
       this.$router.push({ name: "step0" });
     }

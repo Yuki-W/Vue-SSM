@@ -18,15 +18,29 @@
             type="tel"
             maxlength="11"
             placeholder="请输入手机号"
-            v-model="number"
-            @keyup="handleInput"
+            v-model="telephone"
+            @input="handleTel"
           />
           <div class="btn txt" :class="[isDisable?'disable':'']">获取验证码</div>
         </section>
+        <span class="message" :class="{'show':isErrorTel}">手机号输入有误</span>
         <section class="form-item">
-          <input type="tel" maxlength="6" placeholder="验证码" />
+          <input
+            type="tel"
+            maxlength="6"
+            placeholder="验证码"
+            v-model="code"
+            @input="handleCode"
+            :disabled="isDisable"
+          />
         </section>
-        <routerLink to="/applyShop" type="button" class="mui-btn mui-btn-primary">注册/登录</routerLink>
+        <span class="message" :class="{'show':isErrorCode}">验证码错误</span>
+        <!-- <routerLink to="/applyShop" type="button" class="mui-btn mui-btn-primary" @click="checkLogin">注册/登录</routerLink> -->
+        <button
+          class="mui-btn mui-btn-primary"
+          @click="checkLogin"
+          :class="[(telephone!==''&& code!=='')?'active':'']"
+        >注册/登录</button>
       </form>
       <div class="tips">未注册手机号将自动为您注册</div>
     </div>
@@ -47,18 +61,52 @@ export default {
   data() {
     //这里存放数据
     return {
-      number: "",
-      isDisable: true
+      telephone: "", //手机号
+      code: "", //验证码
+      isDisable: true,
+      isErrorTel: false,
+      isErrorCode: false
     };
   },
   methods: {
-    handleInput() {
+    handleTel() {
+      this.isErrorTel=false
       //输入监听事件
-      if (this.number.length === 11) {
+      if (this.telephone.length === 11) {
         this.isDisable = false;
       } else {
         this.isDisable = true;
       }
+    },
+    handleCode(){
+      this.isErrorCode=false
+    },
+    checkLogin() {
+      // 定义验证手机号规则
+      let telReg = /^1[3|4|5|7|8][0-9]{9}$/;
+      // 定义验证码规则
+      let codeReg = /^[0-9]{6}$/;
+
+      let telFlag = telReg.test(this.telephone)
+      let codeFlag = codeReg.test(this.code)
+      if(telFlag && codeFlag){
+        this.login()
+        this.$router.push("/applyShop"); //验证通过
+      }else{
+        this.isErrorTel = !telFlag
+        this.isErrorCode=!codeFlag
+      }
+    },
+    login(){  //注册登录
+      // 拼接出一个 要保存到 store 中shops数组里的店铺信息对象,手机号是唯一的
+      // {mainCate:主营,minorCate:次营,address:店铺地址,addrCode:门牌号,logo:门脸图,shopName:门店牌匾名称,enviroment:店内环境图,managName:联系人,phone:联系人电话}
+      let shopLists = {
+        // mainCate:this.mainCate,
+        telephone:this.telephone
+      }
+      this.$store.commit('handleId',this.telephone)
+      // 调用 store 中的 mutations 来添加店铺信息
+      this.$store.commit('addToShop',shopLists)
     }
   }
 };
@@ -129,6 +177,9 @@ export default {
   border-radius: 5px;
   padding: 10px 0;
 }
+.mui-btn.mui-btn-primary.active {
+  background-color: #1989fa;
+}
 .tips {
   margin: 10px 0;
   font-size: 16px;
@@ -139,8 +190,18 @@ export default {
   width: 100%;
   align-items: center;
   justify-content: center;
-  /* font-size: 12px; */
   color: #c0c4cc;
   padding: 20px 0;
+}
+
+.message {
+  display: block;
+  font-size: 10px;
+  color: #fff;
+  margin-top: -16px;
+  padding-left: 20px;
+}
+.message.show {
+  color: red;
 }
 </style>

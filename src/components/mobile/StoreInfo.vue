@@ -49,41 +49,41 @@ export default {
       isEnviroment: false,
       isAddr: false,
       list: {},
-      mainCate:'',
-      address:'',
-      logo:'',
-      shopName:'',
-      enviroment:'',
-      managName:'',
-      phone:'',
+      mainCate: "",
+      address: "",
+      logo: "",
+      shopName: "",
+      enviroment: "",
+      managName: "",
+      phone: ""
     };
   },
   methods: {
-    getInfo() {
-      let shopInfo = JSON.parse(sessionStorage.getItem('shopInfo'));
-      if(shopInfo !== null){
-        this.mainCate = shopInfo.mainCate;
-        this.address = shopInfo.address;
-        this.logo = shopInfo.logo;
-        this.shopName = shopInfo.shopName;
-        this.enviroment = shopInfo.enviroment;
-        this.managName = shopInfo.managName;
-        this.phone = shopInfo.phone;
-      }
-    },
-    oprate(){
-      this.isCate = this.mainCate === "请选择经营品类"|| this.mainCate==='' ? true : false;
-      this.isAddr = this.address === "省 - 市 - 区/县"|| this.address==='' ? true : false;
-      this.isLogo = this.logo === '' ? true : false;
-      this.isPic = this.shopName === '' ? true : false;
-      this.isEnviroment = this.enviroment === '' ? true : false;
-      this.isName = this.managName === '' ? true : false;
-      this.isPhone = this.phone === '' ? true : false;
-    },
+    // getInfo() {
+    //   let shopInfo = JSON.parse(sessionStorage.getItem('shopInfo'));
+    //   if(shopInfo !== null){
+    //     this.mainCate = shopInfo.mainCate;
+    //     this.address = shopInfo.address;
+    //     this.logo = shopInfo.logo;
+    //     this.shopName = shopInfo.shopName;
+    //     this.enviroment = shopInfo.enviroment;
+    //     this.managName = shopInfo.managName;
+    //     this.phone = shopInfo.phone;
+    //   }
+    // },
+    // oprate(){
+    //   this.isCate = this.mainCate === "请选择经营品类"|| this.mainCate==='' ? true : false;
+    //   this.isAddr = this.address === "省 - 市 - 区/县"|| this.address==='' ? true : false;
+    //   this.isLogo = this.logo === '' ? true : false;
+    //   this.isPic = this.shopName === '' ? true : false;
+    //   this.isEnviroment = this.enviroment === '' ? true : false;
+    //   this.isName = this.managName === '' ? true : false;
+    //   this.isPhone = this.phone === '' ? true : false;
+    // },
     // 【下一步】按钮
     next() {
-      this.getInfo()
-      this.oprate()
+      // this.getInfo()
+      // this.oprate()
       // if (this.index < 2) {
       //   this.index++;
       //   this.msg = "上一步";
@@ -93,8 +93,8 @@ export default {
       //   this.isDisable = !this.isDisable;
       // }
       // this.$router.push({ name: "step" + this.index });
-
       // let cateList = JSON.parse(sessionStorage.getItem("cateList"));
+
     },
     //【上一步】按钮
     previous() {
