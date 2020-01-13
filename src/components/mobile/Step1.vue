@@ -10,7 +10,6 @@
             {{mainCate}}
             <br />
             {{minorCate}}
-            <!-- {{getMainCate}}<br>{{getMinorCate}} -->
             <span class="mui-icon mui-icon-arrowright"></span>
           </div>
           <div class="hide" :class="{'tips':cateTips}">请选择您的经营品类</div>
@@ -140,7 +139,6 @@ export default {
   props: {
     cateTips: Boolean,
     nameTips: Boolean,
-    phoneTips: Boolean,
     shopNameTips: Boolean,
     logoTips: Boolean,
     addrTips: Boolean,
@@ -242,15 +240,15 @@ export default {
       this.shopName = object.shopName;
 
       if (object.cateLists) {
-        this.mainCate = object.cateLists[0].name;
+        this.mainCate = `主营：${object.cateLists[0].name}`;
         if (object.cateLists.length > 1) {
-          this.minorCate = object.cateLists[1].name;
+          this.minorCate = `主营：${object.cateLists[1].name}`;
         }
       } else {
         this.mainCate = "请选择经营品类别";
       }
-      this.logo = object.logo
-      this.enviroment = object.enviroment
+      this.logo = `/api${object.logo}`
+      this.enviroment = `/api${object.enviroment}`
       return object;
     }
     

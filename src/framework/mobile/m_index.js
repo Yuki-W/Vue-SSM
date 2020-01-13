@@ -60,7 +60,6 @@ const store = new Vuex.Store({ //创建仓库
           return true;
         }
       })
-
       if (!flag) {
         state.shops.push(shopLists)
       }

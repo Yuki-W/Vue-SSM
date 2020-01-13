@@ -3,13 +3,13 @@
   <div v-show="showPopup" class="uploadPic">
     <!-- 这里是要展示的内容 -->
     <div class="main">
-      <div class="main-txt">
+      <form class="main-txt" enctype="multipart/form-data" method="post">
         <strong>注意事项</strong>
         <p>·需拍出完整门匾、门框（建议正对门店2米处拍摄）</p>
         <img :src="imgPath[index]" @click="showPic" />
-        <input type="file" v-show="showUpload" value="上传文件" id="logo-img-file" @change="getPicFile" />
+        <input type="file" v-show="showUpload" value="上传文件" id="logo-img-file" @change="getPicFile" multiple/>
         <label for="logo-img-file" v-show="showUpload" class="mui-btn mui-btn-primary">上传文件</label>
-      </div>
+      </form>
       <div class="icon">
         <span class="mui-icon mui-icon-close" @click="closePopup"></span>
       </div>
@@ -72,23 +72,26 @@ export default {
     },
     getPicFile(even) {
       //点击上传图片按钮，改变图片路径
-      let _this = this;
-      let files = even.target.files[0];
-      if (!even || !window.FileReader) return; // 看支持不支持FileReader
-      let reader = new FileReader();
-      reader.readAsDataURL(files); //关键一步，将读取到的文件转换成base64编码
-      reader.onloadend = function() {
-        _this.picFile = this.result;
-        _this.closePopup();
-          // _this.$store.commit("changePicPath", {path:_this.picFile,item:_this.index});
-          let info = {}
-          if(_this.index === 0){
-            info = { logo: _this.picFile };
-          }else if(_this.index === 1){
-            info = { enviroment: _this.picFile };
+      console.log("前端准备提交文件了");
+      let name = this.index === 0? "门脸图":"店内环境图"
+      let file = even.target.files[0];//获取文件资源
+      let formData = new FormData()
+      formData.append('name',name)
+      formData.append('file',file)
+      console.log(file)
+      this.$axios.post("/api/fileUpload",formData).then(result => {
+        // console.log(result);
+        if(result.data.flag){
+          let info={}
+          if(this.index === 0){
+              info = {logo:result.data.message}
+            }else{
+              info = {enviroment:result.data.message}
             }
-            _this.$store.commit("updateInfo", info);
-      };
+            this.$store.commit('updateInfo',info)
+          this.closePopup()
+        }
+      })
     }
   }
 };

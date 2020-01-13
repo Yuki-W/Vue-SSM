@@ -39,22 +39,22 @@ let router = new Router({
     {
       path: '/storeInfo',
       component: () => import("../../components/mobile/StoreInfo"),
-      children: [{
-          path: '/',
-          name: 'step0',
-          component: () => import("../../components/mobile/Step1")
-        },
-        {
-          path: '/storeInfo/step1',
-          name: 'step1',
-          component: () => import("../../components/mobile/Step2")
-        },
-        {
-          path: '/storeInfo/step2',
-          name: 'step2',
-          component: () => import("../../components/mobile/Step3")
-        },
-      ]
+      // children: [{
+      //     path: '/',
+      //     name: 'step0',
+      //     component: () => import("../../components/mobile/Step1")
+      //   },
+      //   {
+      //     path: '/storeInfo/step1',
+      //     name: 'step1',
+      //     component: () => import("../../components/mobile/Step2")
+      //   },
+      //   {
+      //     path: '/storeInfo/step2',
+      //     name: 'step2',
+      //     component: () => import("../../components/mobile/Step3")
+      //   },
+      // ]
     },
     {
       path: '/category',

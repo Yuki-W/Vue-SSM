@@ -3,6 +3,8 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 
 var url = 'http://localhost:8080/SSM_demo'
+var srcURL = 'http://localhost:8080/FileDir'
+
 const path = require('path')
 
 module.exports = {
@@ -12,11 +14,18 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      "/api":{
-        target:url,
-        changeOrigin:true,
-        pathRewrite:{
-          '^/api':''
+      "/api": {
+        target: url,
+        changeOrigin: true,
+        pathRewrite: {
+          '^/api': ''
+        }
+      },
+      "/srcURL": {
+        target: srcURL,
+        changeOrigin: true,
+        pathRewrite: {
+          '^/srcURL': ''
         }
       }
     },
@@ -29,7 +38,7 @@ module.exports = {
     notifyOnErrors: true,
     poll: false, // https://webpack.js.org/configuration/dev-server/#devserver-watchoptions-
 
-    
+
     /**
      * Source Maps
      */

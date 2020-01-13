@@ -70,7 +70,8 @@ export default {
    
     let shopList = this.$store.getters.filterShop(); // 获取当前店铺信息
     let cateArray = shopList.cateLists; // 当前店铺的经营类别信息
-    if (cateArray !== null) {
+    console.log(cateArray);
+    if (cateArray !== null && cateArray !== undefined) {
       this.isSubmit = true;
       for (let i = 0; i < cateArray.length; i++) {
         this.map.push(cateArray[i])
@@ -154,7 +155,7 @@ export default {
         let info = {cateLists:this.map}
         this.$store.commit("updateInfo", info);
       }
-      this.$router.push({ name: "step0" });
+      this.$router.push({ path: "/storeInfo" });
     }
   }
 };
