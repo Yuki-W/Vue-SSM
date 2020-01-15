@@ -217,12 +217,13 @@ export default {
       if(!this.cateTips && !this.addrTips && !this.logoTips && !this.shopNameTips && !this.envTips && !this.nameTips){
         //验证通过
         console.log("验证通过");
+        this.$router.push({name:'step2'})
       }else{
         //验证不通过
         console.log("验证不通过");
       }
     },
-    reqCheck(item) {
+    reqCheck(item) {  //必填项验证
       switch (item) {
         case 1:
           if(this.mainCate === '请选择经营品类别'){
@@ -261,7 +262,7 @@ export default {
           break;
         case 6:
           var ren = /^[\u4e00-\u9fa5]+(·[\u4e00-\u9fa5]+)*$/;
-          console.log(this.managName.length);
+          // console.log(this.managName.length);
           if (this.managName === "" || this.managName === undefined) {
             this.nameTips = true;
             this.msg='当前项不能为空'
@@ -271,7 +272,7 @@ export default {
           }else{
             this.nameTips = false
           }
-          if(this.managName.length<2){
+          if(this.managName !== undefined && this.managName.length<2){
             this.nameTips = true
             this.msg = '姓名至少为两个汉字'
           }

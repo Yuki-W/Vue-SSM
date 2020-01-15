@@ -57,6 +57,11 @@ let router = new Router({
       // ]
     },
     {
+      path:'/storeInfo2',
+      name:'step2',
+      component:()=>import("../../components/mobile/StoreInfo2")
+    },
+    {
       path: '/category',
       component: () => import("../../components/mobile/Category")
     }
